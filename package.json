@@ -1,0 +1,42 @@
+{
+  "name": "ninten-ide",
+  "productName": "NintenIDE",
+  "version": "1.0.0",
+  "description": "Professional Web Code Editor Desktop App",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^25.3.0",
+    "electron-builder": "^24.6.3"
+  },
+  "build": {
+    "appId": "com.ninten.ide",
+    "productName": "NintenIDE",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "icon.ico"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Development"
+    }
+  }
+}
