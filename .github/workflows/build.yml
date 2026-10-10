@@ -1,0 +1,47 @@
+name: Build NintenIDE Desktop App
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - 'v*' # Tự động kích hoạt khi bạn tạo Release tag (ví dụ: v1.0.0)
+
+jobs:
+  build:
+    name: Build for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Electron App
+        run: npm run build
+        env:
+          # Bỏ qua yêu cầu mã hóa chứng chỉ bảo mật trên Mac/Windows để build bản test/cá nhân dễ dàng
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifacts (Dist files)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ninten-ide-${{ matrix.os }}
+          path: |
+            dist/*.exe
+            dist/*.dmg
+            dist/*.AppImage
+            dist/*.deb
+            dist/*.zip
